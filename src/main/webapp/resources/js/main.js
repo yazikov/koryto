@@ -247,7 +247,7 @@ function formatTime (sensorValue) {
 
 function formatDateTime (date) {
 
-    var dateStr = date.getDay() > 9 ? date.getDay() : "0" + date.getDay();
+    var dateStr = date.getDate() > 9 ? date.getDate() : "0" + date.getDate();
     dateStr += "/";
     dateStr += date.getMonth() + 1 > 9 ? date.getMonth() + 1 : "0" + date.getMonth() + 1;
     dateStr += "/";
