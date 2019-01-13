@@ -14,7 +14,14 @@
 <input type="hidden" id="maxSensorLength" value="${lastSensor.lengthValue}" />
 <input type="hidden" id="lastDate" value="${sensor.date}" />
 <input type="hidden" id="lastTime" value="${sensor.time}" />
-<svg id="map" width="100%" height="100%" class="map" viewBox="0 0 1231 941" preserveAspectRatio="none">
+<script>
+    var mapImage = '${mapImage}',
+        mapCabelImage = '${mapCabelImage}',
+        mapBlockImage = '${mapBlockImage}',
+        mapCabelBlockImage = '${mapCabelBlockImage}';
+</script>
+<svg id="map" width="100%" height="100%" class="map" viewBox="0 0 ${mapHeight} ${mapWidth}"
+     preserveAspectRatio="none" style="background-image: url('/resources/images/${mapImage}')">
     <c:forEach items="${sensors}" var="sensor" varStatus="i">
         <c:set var="value" value="${sensorValues.get(sensor.id)}" />
         <g class="sensor sensor-${sensor.id}" data-id="${sensor.id}" data-value="${value.value}" data-title="${sensor.lengthValue}">

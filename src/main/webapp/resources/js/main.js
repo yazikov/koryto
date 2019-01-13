@@ -99,7 +99,27 @@ $(document).ready(function() {
         criterionSetting.find('#criterion-end').val(end);
     });
 
+    $('.mapLayerChange').click(function (e) {
+        setMapImage();
+    });
+
 });
+
+function setMapImage() {
+    var leakControlOn = $('#leakControlOn'),
+        layoutPlatesOn = $('#layoutPlatesOn'),
+        map = $('.map');
+
+    if (leakControlOn.prop("checked") && layoutPlatesOn.prop("checked")) {
+        map.css('background-image', 'url(\'/resources/images/' + mapCabelBlockImage + '\')');
+    } else if (leakControlOn.prop("checked")) {
+        map.css('background-image', 'url(\'/resources/images/' + mapCabelImage + '\')');
+    } else if (layoutPlatesOn.prop("checked")) {
+        map.css('background-image', 'url(\'/resources/images/' + mapBlockImage + '\')');
+    } else {
+        map.css('background-image', 'url(\'/resources/images/' + mapImage + '\')');
+    }
+}
 
 function updateSensorsByTime() {
     updateSensors(false);
