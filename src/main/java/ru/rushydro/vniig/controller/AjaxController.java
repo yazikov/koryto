@@ -37,25 +37,25 @@ public class AjaxController {
     @RequestMapping(value = "/updateSensor", method = RequestMethod.GET)
     public @ResponseBody SensorUpdateData getSensorUpdateData(@RequestParam String date, @RequestParam String time, @RequestParam boolean force) {
         SensorUpdateData sensorUpdateData = new SensorUpdateData();
-        if (force) {
-            sensorUpdateData.setUpdate(true);
-        } else {
-            SensorValue last = service.getLastValue();
-            LocalDate lastDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            LocalTime lastTime = LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm:ss"));
-            if (lastDate.isBefore(last.getDate()) || (lastDate.isEqual(last.getDate()) && lastTime.isBefore(last.getTime()))) {
-                sensorUpdateData.setUpdate(true);
-            } else {
-                sensorUpdateData.setUpdate(false);
-            }
-        }
-
-        if (sensorUpdateData.getUpdate()) {
-            List<SensorValue> sensorValues = new ArrayList<>(service.getSensorValues().values());
-            sensorUpdateData.setSensors(sensorValues);
-            sensorUpdateData.setMin(sensorValues.stream().mapToDouble(SensorValue::getValue).min().getAsDouble());
-            sensorUpdateData.setMax(sensorValues.stream().mapToDouble(SensorValue::getValue).max().getAsDouble());
-        }
+//        if (force) {
+//            sensorUpdateData.setUpdate(true);
+//        } else {
+//            SensorValue last = service.getLastValue();
+//            LocalDate lastDate = LocalDate.parse(date, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+//            LocalTime lastTime = LocalTime.parse(time, DateTimeFormatter.ofPattern("HH:mm:ss"));
+//            if (lastDate.isBefore(last.getDate()) || (lastDate.isEqual(last.getDate()) && lastTime.isBefore(last.getTime()))) {
+//                sensorUpdateData.setUpdate(true);
+//            } else {
+//                sensorUpdateData.setUpdate(false);
+//            }
+//        }
+//
+//        if (sensorUpdateData.getUpdate()) {
+//            List<SensorValue> sensorValues = new ArrayList<>(service.getSensorValues().values());
+//            sensorUpdateData.setSensors(sensorValues);
+//            sensorUpdateData.setMin(sensorValues.stream().mapToDouble(SensorValue::getValue).min().getAsDouble());
+//            sensorUpdateData.setMax(sensorValues.stream().mapToDouble(SensorValue::getValue).max().getAsDouble());
+//        }
 
         return sensorUpdateData;
     }

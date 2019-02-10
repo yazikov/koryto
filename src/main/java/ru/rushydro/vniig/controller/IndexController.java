@@ -20,11 +20,10 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.LongStream;
 
 /**
  * Created by nikolay on 06.09.15.
@@ -34,7 +33,7 @@ import java.util.stream.IntStream;
 public class IndexController {
     final static Logger log = Logger.getLogger(IndexController.class);
 
-    public static int SQUERE = 96;
+    public static double SQUERE = 19.3;
 
     @Value("${show.layers:false}")
     public boolean showLayers;
@@ -93,14 +92,35 @@ public class IndexController {
     }
 
     private void buildDataNew(Model model) {
+        final List<Long> notInSensorIds = new ArrayList<>();
+
+        notInSensorIds.addAll(LongStream.range(7, 47).boxed().collect(Collectors.toList()));
+        notInSensorIds.addAll(LongStream.range(54, 59).boxed().collect(Collectors.toList()));
+        notInSensorIds.addAll(LongStream.range(62, 80).boxed().collect(Collectors.toList()));
+        notInSensorIds.addAll(LongStream.range(87, 92).boxed().collect(Collectors.toList()));
+        notInSensorIds.addAll(LongStream.range(102, 107).boxed().collect(Collectors.toList()));
+        notInSensorIds.addAll(LongStream.range(118, 122).boxed().collect(Collectors.toList()));
+        notInSensorIds.addAll(LongStream.range(134, 140).boxed().collect(Collectors.toList()));
+        notInSensorIds.addAll(LongStream.range(149, 156).boxed().collect(Collectors.toList()));
+        notInSensorIds.addAll(LongStream.range(182, 189).boxed().collect(Collectors.toList()));
+        notInSensorIds.addAll(LongStream.range(197, 204).boxed().collect(Collectors.toList()));
+        notInSensorIds.addAll(LongStream.range(230, 237).boxed().collect(Collectors.toList()));
+        notInSensorIds.addAll(LongStream.range(244, 253).boxed().collect(Collectors.toList()));
+        notInSensorIds.addAll(LongStream.range(275, 287).boxed().collect(Collectors.toList()));
+        notInSensorIds.addAll(LongStream.range(290, 303).boxed().collect(Collectors.toList()));
+        notInSensorIds.addAll(LongStream.range(323, 336).boxed().collect(Collectors.toList()));
+        notInSensorIds.addAll(LongStream.range(338, 351).boxed().collect(Collectors.toList()));
+        notInSensorIds.addAll(LongStream.range(370, 384).boxed().collect(Collectors.toList()));
+        notInSensorIds.addAll(LongStream.range(386, 399).boxed().collect(Collectors.toList()));
+
         List<Sensor> sensors = new ArrayList<>();
         BigDecimal start = new BigDecimal("0");
 
         LocalDate date = LocalDate.now();
         LocalTime time = LocalTime.now();
 
-        int y = 664;
-        int x = 117;
+        double y = 605;
+        double x = 260;
 
         int k = -1;
 
@@ -124,45 +144,36 @@ public class IndexController {
 
         Map<Long, SensorValue> sensorValues = new HashMap<>();
 
-        for (int i = 1; i <= 61; i++) {
+        for (int i = 1; i <= 2500; i++) {
+
+
             Sensor sensor = new Sensor();
             sensor.setId(i);
             sensor.setX(x);
             sensor.setY(y);
 
-            if (i != 1 && (i - 1) % 6 == 0 && i != 61) {
-                sensor.setWidth(sensor.getWidth() * 2);
-            }
-
-            if (i != 1 && i != 2 && (i - 1) % 6 == 0) {
-                x += SQUERE;
-            }
-
-            if (i != 1 && (i - 1) % 6 == 0) {
+            if (i % 26 == 0) {
                 k = -1 * k;
+                x += SQUERE;
+            } else {
+                y -= k * SQUERE;
             }
-
-            y += k * SQUERE;
 
             sensor.setLengthValue("" + start.toString());
-            sensors.add(sensor);
-
             start = start.add(new BigDecimal("0.2"));
 
-            SensorValue value = new SensorValue();
-            value.setId(sensor.getId());
-            value.setValue(i);
-            value.setDate(date);
-            value.setTime(time);
-            for (Criterion criterion : criterions) {
-                if (value.getValue() >= criterion.getStartValue() && value.getValue() < criterion.getEndValue()) {
-                    value.setColor(criterion.getColor());
-                    break;
-                }
+            if (!notInSensorIds.contains(sensor.getId())) {
+                sensors.add(sensor);
+
+                SensorValue value = new SensorValue();
+                value.setId(sensor.getId());
+                value.setValue(i);
+                value.setDate(date);
+                value.setTime(time);
+                value.setColor(criterions.get(7).getColor());
+
+                sensorValues.put(value.getId(), value);
             }
-
-
-            sensorValues.put(value.getId(), value);
         }
 
         model.addAttribute("sensors", sensors);
@@ -170,19 +181,19 @@ public class IndexController {
         model.addAttribute("minValue", sensorValues.values().stream().min((v1,v2) -> (int) (v1.getValue() - v2.getValue())).get().getValue() - 1);
         model.addAttribute("maxValue", sensorValues.values().stream().max((v1,v2) -> (int) (v1.getValue() - v2.getValue())).get().getValue() + 1);
 
-        criterions.forEach(c -> System.out.println("insert into criterion values(" + c.getId() +
-                "," + c.getStartValue() + "," + c.getEndValue() + "," + c.getRed() + "," + c.getBlue()
-                + "," + c.getGreen()  + "," + c.getIntensity() + ");"));
-
-        sensors.forEach(s -> System.out.println("insert into sensor values(" +
-                s.getId() + "," + s.getLengthValue() + "," + s.getX() + "," + s.getY()
-                + "," + s.getWidth() + "," + s.getHeight() + ");"));
-
-        sensorValues.values().forEach(sv -> System.out.println("insert into sensor_value values (" +
-                sv.getId() + "," + sv.getId() + "," + sv.getValue() + ",CURRENT_DATE,CURRENT_TIME" +");"));
-
-        sensorValues.values().forEach(sv -> System.out.println("insert into sensor_value_storage values (" +
-                sv.getId() + "," + sv.getId() + "," + sv.getValue() + ",CURRENT_DATE,CURRENT_TIME" +");"));
+//        criterions.forEach(c -> System.out.println("insert into criterion values(" + c.getId() +
+//                "," + c.getStartValue() + "," + c.getEndValue() + "," + c.getRed() + "," + c.getBlue()
+//                + "," + c.getGreen()  + "," + c.getIntensity() + ");"));
+//
+//        sensors.forEach(s -> System.out.println("insert into sensor values(" +
+//                s.getId() + "," + s.getLengthValue() + "," + s.getX() + "," + s.getY()
+//                + "," + s.getWidth() + "," + s.getHeight() + ");"));
+//
+//        sensorValues.values().forEach(sv -> System.out.println("insert into sensor_value values (" +
+//                sv.getId() + "," + sv.getId() + "," + sv.getValue() + ",CURRENT_DATE,CURRENT_TIME" +");"));
+//
+//        sensorValues.values().forEach(sv -> System.out.println("insert into sensor_value_storage values (" +
+//                sv.getId() + "," + sv.getId() + "," + sv.getValue() + ",CURRENT_DATE,CURRENT_TIME" +");"));
     }
 
     public void buildData(Model model) {

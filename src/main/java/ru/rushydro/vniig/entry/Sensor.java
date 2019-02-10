@@ -8,13 +8,15 @@ import ru.rushydro.vniig.controller.IndexController;
 public class Sensor {
     private long id;
 
-    private int x;
+    private long dependentFromSensorId;
 
-    private int y;
+    private double x;
 
-    private int width = IndexController.SQUERE;
+    private double y;
 
-    private int height = IndexController.SQUERE;
+    private double width = IndexController.SQUERE;
+
+    private double height = IndexController.SQUERE;
 
     private String lengthValue;
 
@@ -26,31 +28,31 @@ public class Sensor {
         this.id = id;
     }
 
-    public int getX() {
+    public double getX() {
         return x;
     }
 
-    public void setX(int x) {
+    public void setX(double x) {
         this.x = x;
     }
 
-    public int getY() {
+    public double getY() {
         return y;
     }
 
-    public void setY(int y) {
+    public void setY(double y) {
         this.y = y;
     }
 
-    public int getWidth() {
+    public double getWidth() {
         return width;
     }
 
-    public void setWidth(int width) {
+    public void setWidth(double width) {
         this.width = width;
     }
 
-    public int getHeight() {
+    public double getHeight() {
         return height;
     }
 
@@ -64,6 +66,14 @@ public class Sensor {
 
     public void setLengthValue(String lengthValue) {
         this.lengthValue = lengthValue;
+    }
+
+    public long getDependentFromSensorId() {
+        return dependentFromSensorId;
+    }
+
+    public void setDependentFromSensorId(long dependentFromSensorId) {
+        this.dependentFromSensorId = dependentFromSensorId;
     }
 
     public int getOffset() {

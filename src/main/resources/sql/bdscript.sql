@@ -13,6 +13,7 @@ create table sensor_range (
 /* Информация о датчике */
 create table sensor(
   id integer,
+  id_dependent_from_sensor integer,
   length_value float,
   x integer,
   y integer,

@@ -16,7 +16,7 @@ public class Criterion {
 
     int green;
 
-    double intensity = 0.9;
+    double intensity = 0.5;
 
     public long getId() {
         return id;
