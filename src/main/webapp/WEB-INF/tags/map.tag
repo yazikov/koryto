@@ -20,7 +20,7 @@
         mapBlockImage = '${mapBlockImage}',
         mapCabelBlockImage = '${mapCabelBlockImage}';
 </script>
-<svg id="map" width="100%" height="100%" class="map" viewBox="0 0 ${mapHeight} ${mapWidth}"
+<svg id="map" width="100%" height="100%" class="map" viewBox="0 0 ${mapWidth} ${mapHeight}"
      preserveAspectRatio="none" style="background-image: url('/resources/images/${mapImage}')">
     <c:forEach items="${sensors}" var="sensor" varStatus="i">
         <c:set var="value" value="${sensorValues.get(sensor.id)}" />

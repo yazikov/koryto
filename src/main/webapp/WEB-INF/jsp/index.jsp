@@ -14,7 +14,7 @@
     <div class="col col-left col-xs-2">
       <c:if test="${showLayers}">
         <div class="block">
-          <div class="panel panel-default">
+          <div class="panel panel-default panel-layer">
             <div class="panel-heading">Слои</div>
             <div class="panel-body">
               <t:layers />

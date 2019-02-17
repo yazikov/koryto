@@ -239,6 +239,9 @@ function setCorrectHeight() {
     var container = $('.sensor-container');
     var height = $('body').height();
     var panelSettingHeight = $('.panel-graphic-setting').height();
+    if ($('.panel-layer').length > 0) {
+        panelSettingHeight += $('.panel-layer').height();
+    }
     var titleHeight = container.parents('.panel').first().find('.panel-heading').height();
     container.height((height - panelSettingHeight - titleHeight - 30) + "px");
 }

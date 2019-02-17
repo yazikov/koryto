@@ -56,7 +56,7 @@ public class Sensor {
         return height;
     }
 
-    public void setHeight(int height) {
+    public void setHeight(double height) {
         this.height = height;
     }
 
