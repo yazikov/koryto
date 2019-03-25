@@ -98,21 +98,22 @@ public class IndexController {
 
         notInSensorIds.addAll(LongStream.range(7, 47).boxed().collect(Collectors.toList()));
         notInSensorIds.addAll(LongStream.range(59, 86).boxed().collect(Collectors.toList()));
-        notInSensorIds.addAll(LongStream.range(93, 100).boxed().collect(Collectors.toList()));
-        notInSensorIds.addAll(LongStream.range(110, 117).boxed().collect(Collectors.toList()));
+        notInSensorIds.addAll(LongStream.range(92, 100).boxed().collect(Collectors.toList()));
+        notInSensorIds.addAll(LongStream.range(110, 118).boxed().collect(Collectors.toList()));
         notInSensorIds.addAll(LongStream.range(127, 132).boxed().collect(Collectors.toList()));
-        notInSensorIds.addAll(LongStream.range(145, 152).boxed().collect(Collectors.toList()));
-        notInSensorIds.addAll(LongStream.range(162, 169).boxed().collect(Collectors.toList()));
-        notInSensorIds.addAll(LongStream.range(197, 204).boxed().collect(Collectors.toList()));
-        notInSensorIds.addAll(LongStream.range(214, 222).boxed().collect(Collectors.toList()));
-        notInSensorIds.addAll(LongStream.range(248, 257).boxed().collect(Collectors.toList()));
-        notInSensorIds.addAll(LongStream.range(265, 274).boxed().collect(Collectors.toList()));
+        notInSensorIds.addAll(LongStream.range(144, 152).boxed().collect(Collectors.toList()));
+        notInSensorIds.addAll(LongStream.range(162, 170).boxed().collect(Collectors.toList()));
+        notInSensorIds.addAll(LongStream.range(196, 204).boxed().collect(Collectors.toList()));
+        notInSensorIds.addAll(LongStream.range(214, 223).boxed().collect(Collectors.toList()));
+        notInSensorIds.addAll(LongStream.range(247, 257).boxed().collect(Collectors.toList()));
+        notInSensorIds.addAll(LongStream.range(265, 276).boxed().collect(Collectors.toList()));
         notInSensorIds.addAll(LongStream.range(298, 311).boxed().collect(Collectors.toList()));
         notInSensorIds.addAll(LongStream.range(314, 328).boxed().collect(Collectors.toList()));
         notInSensorIds.addAll(LongStream.range(350, 364).boxed().collect(Collectors.toList()));
         notInSensorIds.addAll(LongStream.range(366, 381).boxed().collect(Collectors.toList()));
         notInSensorIds.addAll(LongStream.range(401, 416).boxed().collect(Collectors.toList()));
         notInSensorIds.addAll(LongStream.range(430, 433).boxed().collect(Collectors.toList()));
+        notInSensorIds.addAll(LongStream.range(453, 456).boxed().collect(Collectors.toList()));
         notInSensorIds.addAll(LongStream.range(1899, 1901).boxed().collect(Collectors.toList()));
         notInSensorIds.addAll(LongStream.range(1949, 1956).boxed().collect(Collectors.toList()));
         notInSensorIds.addAll(LongStream.range(1998, 2011).boxed().collect(Collectors.toList()));
@@ -314,6 +315,15 @@ public class IndexController {
 
         processBlock4(block4, prev);
 
+        prev = block3.get(0);
+
+        prev.setStartLengthValue(new BigDecimal(133.5));
+        prev.setEndLengthValue(new BigDecimal(135));
+        prev.setStartFileLengthValue(new BigDecimal(350));
+        prev.setEndFileLengthValue(new BigDecimal(351.5));
+
+        processBlock(block3, 3, prev, 1, 1.015);
+
         sensors.sort(Comparator.comparingLong(Sensor::getId));
 
         model.addAttribute("sensors", sensors);
@@ -430,6 +440,47 @@ public class IndexController {
                 return new BigDecimal(7.5);
             } else if (Arrays.asList(73).contains(id)) {
                 return new BigDecimal(8.5);
+            }
+        } else if (block == 3) {
+            if (Arrays.asList(230).contains(id)) {
+                return new BigDecimal(-1.5);
+            } else if (Arrays.asList().contains(id)) {
+                return new BigDecimal(0.5);
+            } else if (Arrays.asList(294).contains(id)) {
+                return new BigDecimal(1);
+            } else if (Arrays.asList(328, 329, 339, 341, 344).contains(id)) {
+                return new BigDecimal(1.5);
+            } else if (Arrays.asList(50, 291).contains(id)) {
+                return new BigDecimal(2);
+            } else if (Arrays.asList(309, 387).contains(id)) {
+                return new BigDecimal(3);
+            } else if (Arrays.asList(7, 43, 49, 62, 80, 86, 110, 129, 152, 158, 170, 182, 188, 200, 206,
+                    212, 224, 226, 227, 228, 229, 231, 248, 254, 272, 319, 349, 350, 360, 361, 382, 383, 396, 397, 398,
+                    399, 400, 401).contains(id)) {
+                return new BigDecimal(3.5);
+            } else if (Arrays.asList(310).contains(id)) {
+                return new BigDecimal(4);
+            } else if (Arrays.asList(14, 25, 26, 56, 74, 75, 98, 99, 104, 123, 146, 147, 169, 176, 194,
+                    195, 218, 219, 243, 266, 267, 282, 283, 301, 318, 338, 371, 372).contains(id)) {
+                return new BigDecimal(4.5);
+            } else if (Arrays.asList(394).contains(id)) {
+                return new BigDecimal(5);
+            } else if (Arrays.asList(122, 242, 276, 300, 402).contains(id)) {
+                return new BigDecimal(5.5);
+            } else if (Arrays.asList().contains(id)) {
+                return new BigDecimal(6);
+            } else if (Arrays.asList().contains(id)) {
+                return new BigDecimal(6.5);
+            } else if (Arrays.asList().contains(id)) {
+                return new BigDecimal(7);
+            } else if (Arrays.asList().contains(id)) {
+                return new BigDecimal(7.5);
+            } else if (Arrays.asList().contains(id)) {
+                return new BigDecimal(8);
+            } else if (Arrays.asList(273, 274).contains(id)) {
+                return new BigDecimal(8.5);
+            } else if (Arrays.asList(275).contains(id)) {
+                return new BigDecimal(9.5);
             }
         } else if (block == 4) {
             if (Arrays.asList().contains(id)) {
