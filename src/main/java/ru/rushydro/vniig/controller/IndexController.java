@@ -315,6 +315,14 @@ public class IndexController {
 
         processBlock4(block4, prev);
 
+        block3.sort((s1, s2) -> {
+            if (s1.getX() < 250 && s2.getX() < 250) {
+                return (int) (s2.getId() - s1.getId());
+            } else {
+                return (int) (s1.getId() - s2.getId());
+            }
+        });
+
         prev = block3.get(0);
 
         prev.setStartLengthValue(new BigDecimal(133.5));
@@ -323,6 +331,29 @@ public class IndexController {
         prev.setEndFileLengthValue(new BigDecimal(351.5));
 
         processBlock(block3, 3, prev, 1, 1.015);
+
+        for (Sensor s : block3) {
+            if (s.getX() > 250 && s.getX() < 260 && s.getY() > 590 && s.getY() < 600) {
+                s.setStartLengthValue(new BigDecimal(1250));
+                s.setEndLengthValue(new BigDecimal(1253.5));
+                s.setStartFileLengthValue(new BigDecimal(1483.2));
+                s.setEndFileLengthValue(new BigDecimal(1486.8));
+            } else if (s.getX() > 250 && s.getX() < 260 && s.getY() > 610 && s.getY() < 620) {
+                s.setStartLengthValue(new BigDecimal(1253.5));
+                s.setEndLengthValue(new BigDecimal(1259));
+                s.setStartFileLengthValue(new BigDecimal(1486.8));
+                s.setEndFileLengthValue(new BigDecimal(1492.4));
+            }
+        }
+
+        prev = block2.get(0);
+
+        prev.setStartLengthValue(new BigDecimal(50));
+        prev.setEndLengthValue(new BigDecimal(52));
+        prev.setStartFileLengthValue(new BigDecimal(1267.6));
+        prev.setEndFileLengthValue(new BigDecimal(1265.5));
+
+        processBlock(block2, 2, prev, 1, 1.015);
 
         sensors.sort(Comparator.comparingLong(Sensor::getId));
 
@@ -353,9 +384,9 @@ public class IndexController {
             Sensor current = block.get(c);
             if (isWithLength(blockNumber, current)) {
                 o++;
-                current.setStartLengthValue(prev.getEndLengthValue());
-                current.setEndLengthValue(current.getStartLengthValue().add(getLength(blockNumber, o)));
-                current.setStartFileLengthValue(prev.getEndFileLengthValue());
+                current.setStartLengthValue(prev.getEndLengthValue().setScale(2, RoundingMode.HALF_UP));
+                current.setEndLengthValue(current.getStartLengthValue().add(getLength(blockNumber, o)).setScale(2, RoundingMode.HALF_UP));
+                current.setStartFileLengthValue(prev.getEndFileLengthValue().setScale(4, RoundingMode.HALF_UP));
                 current.setEndFileLengthValue(current.getEndLengthValue().subtract(current.getStartLengthValue())
                         .multiply(new BigDecimal(k)).add(current.getStartFileLengthValue()).setScale(4, RoundingMode.HALF_UP));
                 prev = current;
@@ -371,9 +402,9 @@ public class IndexController {
             Sensor current = block.get(c);
             if (isWithLength(4, current)) {
                 o++;
-                current.setStartLengthValue(prev.getEndLengthValue());
-                current.setEndLengthValue(current.getStartLengthValue().subtract(getLength(4, o)));
-                current.setStartFileLengthValue(prev.getEndFileLengthValue());
+                current.setStartLengthValue(prev.getEndLengthValue().setScale(2, RoundingMode.HALF_UP));
+                current.setEndLengthValue(current.getStartLengthValue().subtract(getLength(4, o)).setScale(2, RoundingMode.HALF_UP));
+                current.setStartFileLengthValue(prev.getEndFileLengthValue().setScale(4, RoundingMode.HALF_UP));
                 current.setEndFileLengthValue(current.getStartLengthValue().subtract(current.getEndLengthValue())
                         .multiply(new BigDecimal(1.015)).add(current.getStartFileLengthValue()).setScale(4, RoundingMode.HALF_UP));
                 prev = current;
@@ -404,6 +435,31 @@ public class IndexController {
                 return false;
             }
             if (sensor.getX() > 1680 && sensor.getY() > 530) {
+                return false;
+            }
+        } else  if (block == 3) {
+            if (sensor.getY() > 700 && sensor.getX() > 880 && sensor.getX() < 910) {
+                return true;
+            }
+            if (sensor.getY() < 700 && sensor.getX() > 860 && sensor.getX() < 910) {
+                return false;
+            }
+            if (sensor.getY() > 700 && sensor.getX() < 970) {
+                return false;
+            }
+            if (sensor.getY() < 550 && sensor.getX() > 470 && sensor.getX() < 520) {
+                return false;
+            }
+            if (sensor.getY() < 530 && sensor.getX() > 400 && sensor.getX() < 440) {
+                return false;
+            }
+            if (sensor.getY() < 490 && sensor.getX() > 280 && sensor.getX() < 330) {
+                return false;
+            }
+            if (sensor.getY() > 690 && sensor.getX() > 270 && sensor.getX() < 280) {
+                return false;
+            }
+            if (sensor.getY() > 480 && sensor.getX() > 250 && sensor.getX() < 260) {
                 return false;
             }
         }
@@ -515,6 +571,48 @@ public class IndexController {
                 return new BigDecimal(8);
             } else if (Arrays.asList(368, 369, 370, 371, 372, 374, 375, 376, 377, 378).contains(id)) {
                 return new BigDecimal(8.5);
+            }
+        } else if (block == 2) {
+            if (Arrays.asList(26, 27).contains(id)) {
+                return new BigDecimal(-5);
+            } else if (Arrays.asList(396, 397, 419, 420, 421).contains(id)) {
+                return new BigDecimal(0.5);
+            } else if (Arrays.asList(57, 58, 84, 127, 157, 175, 252, 253, 276, 422, 424).contains(id)) {
+                return new BigDecimal(1.5);
+            } else if (Arrays.asList(14, 30, 31, 32, 33, 34, 40, 50, 55, 59, 78).contains(id)) {
+                return new BigDecimal(2);
+            } else if (Arrays.asList(4, 5, 6, 7, 10, 11, 12, 13, 19, 20, 36, 41, 44, 45, 46, 47, 48, 49, 60, 61,
+                    62, 63, 64, 65, 66, 70, 71).contains(id)) {
+                return new BigDecimal(3);
+            } else if (Arrays.asList(85, 97, 98, 100, 122, 146, 156, 205, 290, 292, 300, 301, 313, 324, 325, 336,
+                    337, 349, 360, 361, 372, 373, 385, 432).contains(id)) {
+                return new BigDecimal(3.5);
+            } else if (Arrays.asList(15, 16, 17, 18, 35, 37, 38, 39, 67, 68).contains(id)) {
+                return new BigDecimal(4);
+            } else if (Arrays.asList(120, 121, 144, 145, 193, 241, 265, 288, 289, 312, 348, 384).contains(id)) {
+                return new BigDecimal(4.5);
+            } else if (Arrays.asList(69).contains(id)) {
+                return new BigDecimal(5);
+            } else if (Arrays.asList(168, 169, 192, 240, 264, 409).contains(id)) {
+                return new BigDecimal(5.5);
+            } else if (Arrays.asList(9).contains(id)) {
+                return new BigDecimal(6);
+            } else if (Arrays.asList(216, 408).contains(id)) {
+                return new BigDecimal(6.5);
+            } else if (Arrays.asList(28).contains(id)) {
+                return new BigDecimal(7);
+            } else if (Arrays.asList().contains(id)) {
+                return new BigDecimal(7.5);
+            } else if (Arrays.asList().contains(id)) {
+                return new BigDecimal(8);
+            } else if (Arrays.asList().contains(id)) {
+                return new BigDecimal(8.5);
+            } else if (Arrays.asList(2, 3, 29).contains(id)) {
+                return new BigDecimal(12);
+            } else if (Arrays.asList(8).contains(id)) {
+                return new BigDecimal(13);
+            } else if (Arrays.asList(25).contains(id)) {
+                return new BigDecimal(20);
             }
         }
         return new BigDecimal(2.5);
