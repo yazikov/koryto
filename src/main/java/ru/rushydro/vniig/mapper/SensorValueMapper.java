@@ -21,8 +21,11 @@ public class SensorValueMapper implements RowMapper<SensorValue> {
         sensorValue.setColor(rs.getString("color"));
         sensorValue.setValue(rs.getDouble("value"));
         sensorValue.setDate(LocalDate.parse(rs.getString("v_date"), DateTimeFormatter.ISO_LOCAL_DATE));
-        sensorValue.setTime(LocalTime.parse(rs.getString("v_time"), rs.getString("v_time").contains(".")
-                ? DateTimeFormatter.ofPattern("HH:mm:ss.SSSSSS") : DateTimeFormatter.ofPattern("HH:mm:ss")));
+        String time = rs.getString("v_time");
+        if (time.contains(".")) {
+            time = time.substring(0, time.lastIndexOf("."));
+        }
+        sensorValue.setTime(LocalTime.parse(time,  DateTimeFormatter.ofPattern("HH:mm:ss")));
         return sensorValue;
     }
 }

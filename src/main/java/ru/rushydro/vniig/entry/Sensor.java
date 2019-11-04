@@ -30,6 +30,14 @@ public class Sensor {
 
     private BigDecimal endFileLengthValue;
 
+    private BigDecimal startLengthValue2;
+
+    private BigDecimal endLengthValue2;
+
+    private BigDecimal startFileLengthValue2;
+
+    private BigDecimal endFileLengthValue2;
+
     public long getId() {
         return id;
     }
@@ -116,6 +124,38 @@ public class Sensor {
 
     public void setEndFileLengthValue(BigDecimal endFileLengthValue) {
         this.endFileLengthValue = endFileLengthValue;
+    }
+
+    public BigDecimal getStartLengthValue2() {
+        return startLengthValue2;
+    }
+
+    public void setStartLengthValue2(BigDecimal startLengthValue2) {
+        this.startLengthValue2 = startLengthValue2;
+    }
+
+    public BigDecimal getEndLengthValue2() {
+        return endLengthValue2;
+    }
+
+    public void setEndLengthValue2(BigDecimal endLengthValue2) {
+        this.endLengthValue2 = endLengthValue2;
+    }
+
+    public BigDecimal getStartFileLengthValue2() {
+        return startFileLengthValue2;
+    }
+
+    public void setStartFileLengthValue2(BigDecimal startFileLengthValue2) {
+        this.startFileLengthValue2 = startFileLengthValue2;
+    }
+
+    public BigDecimal getEndFileLengthValue2() {
+        return endFileLengthValue2;
+    }
+
+    public void setEndFileLengthValue2(BigDecimal endFileLengthValue2) {
+        this.endFileLengthValue2 = endFileLengthValue2;
     }
 
     public int getOffset() {
