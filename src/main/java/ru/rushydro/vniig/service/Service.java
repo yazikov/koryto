@@ -51,6 +51,10 @@ public class Service {
         return dao.getLastValue();
     }
 
+    public SensorValue getLastValueByBlock (Integer blockId) {
+        return dao.getLastValueByBlock(blockId);
+    }
+
     public void updateSensorValue(final SensorValue sensorValue) {
         dao.updateSensorValue(sensorValue);
     }

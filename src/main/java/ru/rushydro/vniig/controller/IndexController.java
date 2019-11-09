@@ -97,17 +97,24 @@ public class IndexController {
     }
 
     @RequestMapping(path = "/loadData", method = RequestMethod.POST)
-    public String loadData(@RequestParam MultipartFile file, Model model) {
+    public String loadData(@RequestParam MultipartFile file, @RequestParam Integer block, Model model) {
 
 //        fileService.parseFile(new File("C:\\работа\\Корыто\\2016-04-05_11_36_13.las"));
-
+        Path tmp = null;
         try {
-            Path tmp = Files.createTempFile("data", "las");
+            tmp = Files.createTempFile("data", "las");
             Files.write(tmp, file.getBytes());
-            fileService.parseFile(tmp.toFile());
-            tmp.toFile().delete();
+            fileService.parseFile(tmp.toFile(), file.getOriginalFilename(), block);
         } catch (IOException e) {
             e.printStackTrace();
+        } finally {
+            if (tmp != null && tmp.toFile().exists()) {
+                try {
+                    Files.delete(tmp);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
         }
         
         System.out.println("Получен файл: " + file.getOriginalFilename());

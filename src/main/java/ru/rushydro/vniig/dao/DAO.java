@@ -41,6 +41,10 @@ public class DAO {
         return getJdbcTemplate().query("select * from sensor order by id", new SensorRowMapper());
     }
 
+    public List<Sensor> getSensorsByBlock(Integer blockId) {
+        return getJdbcTemplate().query("select * from sensor where id_block = " + blockId  + " order by id", new SensorRowMapper());
+    }
+
     public List<SensorValue> getSensorValues() {
         return getJdbcTemplate().query("select *, " +
                 "(select ('rgba(' || red || ',' || green || ',' || blue || ',' || intensity || ')') " +
@@ -54,7 +58,14 @@ public class DAO {
 
     public SensorValue getLastValue() {
         return getJdbcTemplate().queryForObject("select *, 'c' as color " +
-                "from sensor_value sv limit 1", new SensorValueMapper());
+                "from sensor_value sv order by id desc limit 1", new SensorValueMapper());
+    }
+
+    public SensorValue getLastValueByBlock(Integer blockId) {
+        return getJdbcTemplate().queryForObject("select sv.*, 'c' as color " +
+                "from sensor_value sv join sensor s on sv.id_sensor = s.id " +
+                "where s.id_block = " + blockId +
+                " order by sv.id desc limit 1", new SensorValueMapper());
     }
 
     public void updateSensorValue(SensorValue sensorValue) {
