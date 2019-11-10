@@ -20,6 +20,8 @@ public class Sensor {
 
     private double height = IndexController.SQUERE;
 
+    private Long blockId;
+
     private String lengthValue;
 
     private BigDecimal startLengthValue;
@@ -156,6 +158,14 @@ public class Sensor {
 
     public void setEndFileLengthValue2(BigDecimal endFileLengthValue2) {
         this.endFileLengthValue2 = endFileLengthValue2;
+    }
+
+    public Long getBlockId() {
+        return blockId;
+    }
+
+    public void setBlockId(Long blockId) {
+        this.blockId = blockId;
     }
 
     public int getOffset() {

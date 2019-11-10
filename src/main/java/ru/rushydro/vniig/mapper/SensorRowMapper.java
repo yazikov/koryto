@@ -51,6 +51,7 @@ public class SensorRowMapper implements RowMapper<Sensor> {
             sensor.setEndFileLengthValue2(length.setScale(2, BigDecimal.ROUND_HALF_UP));
         }
 
+        sensor.setBlockId(rs.getLong("id_block"));
         sensor.setX(rs.getInt("x"));
         sensor.setY(rs.getInt("y"));
         sensor.setWidth(rs.getInt("width"));

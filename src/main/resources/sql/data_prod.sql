@@ -1,2 +1,2 @@
 /* Добавление границ датчиков */
-insert into sensor_range values(0,528.8);
+insert into sensor_range values(0,2528.8);

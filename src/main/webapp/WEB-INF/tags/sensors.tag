@@ -8,6 +8,7 @@
             <tr>
                 <th></th>
                 <th>ID</th>
+                <th>Блок</th>
                 <th>Начало</th>
                 <th>Конец</th>
                 <th>Значение</th>
@@ -19,6 +20,7 @@
             <tr class="sen sen-${sensor.id}" data-id="${sensor.id}" data-title="${sensor.lengthValue}">
                 <td><input type="checkbox" name="sensor-id-${sensor.id}"/></td>
                 <td class="length">${sensor.id}</td>
+                <td class="block-id">${sensor.blockId}</td>
                 <td class="length">${sensor.startLengthValue}</td>
                 <td class="length">${sensor.endLengthValue}</td>
                 <td class="val">${value.value} C<sup>0</sup></td>
