@@ -24,13 +24,14 @@
       </c:if>
       <div class="block">
         <div class="panel panel-default panel-graphic-setting">
-          <div class="panel-heading">Построение графика</div>
+          <div class="panel-heading">Данные архива</div>
           <div class="panel-body">
             <form action='#' method="get" style="padding: 3px;">
               <t:calendar name="startDate" text="Дата с" value="" />
               <t:calendar name="endDate" text="Дата по" value="" />
               <div class="form-group"  style="margin-bottom: 5px;">
                 <button type="button" class="btn btn-default show-graphic">Построить график</button>
+                <button type="button" class="btn btn-default show-table">Вывести таблицу</button>
               </div>
             </form>
           </div>
@@ -38,7 +39,8 @@
       </div>
       <div class="block">
         <div class="panel panel-default">
-          <div class="panel-heading">Список датчиков</div>
+          <div class="panel-heading">Список датчиков<div class="panel-clean-button">
+            <button class="btn btn-sm btn-default clean-sensors">Сбросить</button></div></div>
           <div class="panel-body">
             <t:sensors />
           </div>
@@ -54,6 +56,7 @@
               <li role="presentation" class="active"><a data-toggle="tab" href="#map">Схема</a></li>
               <li role="presentation"><a id="graphic-tab" data-toggle="tab" href="#graphic">Оперативный график</a></li>
               <li role="presentation"><a id="storage-graphic-tab" data-toggle="tab" href="#storage-graphic">График</a></li>
+              <li role="presentation"><a id="storage-table-tab" data-toggle="tab" href="#storage-table">Таблица</a></li>
               <li role="presentation"><a id="settings-tab" data-toggle="tab" href="#settings">Настройки</a></li>
             </ul>
             <div class="tab-content">
@@ -67,6 +70,9 @@
                 <div class="custom-graphic">
 
                 </div>
+              </div>
+              <div id="storage-table" class="tab-pane fade">
+                <t:table />
               </div>
               <div id="settings" class="tab-pane fade">
                 <t:settings />

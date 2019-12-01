@@ -18,8 +18,8 @@
         <c:forEach items="${sensors}" var="sensor" varStatus="i">
             <c:set var="value" value="${sensorValues.get(sensor.id)}" />
             <tr class="sen sen-${sensor.id}" data-id="${sensor.id}" data-title="${sensor.lengthValue}">
-                <td><input type="checkbox" name="sensor-id-${sensor.id}"/></td>
-                <td class="length">${sensor.id}</td>
+                <td><c:if test="${sensor.startLengthValue != null}"><input type="checkbox" name="sensor-id-${sensor.id}"/></c:if></td>
+                <td class="sensor-id">${sensor.id}</td>
                 <td class="block-id">${sensor.blockId}</td>
                 <td class="length">${sensor.startLengthValue}</td>
                 <td class="length">${sensor.endLengthValue}</td>

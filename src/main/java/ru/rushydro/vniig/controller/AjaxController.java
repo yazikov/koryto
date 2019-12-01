@@ -9,10 +9,13 @@ import ru.rushydro.vniig.entry.SensorValue;
 import ru.rushydro.vniig.model.GraphicData;
 import ru.rushydro.vniig.model.RangeUpdateData;
 import ru.rushydro.vniig.model.SensorUpdateData;
+import ru.rushydro.vniig.model.TableData;
 import ru.rushydro.vniig.service.FileService;
 import ru.rushydro.vniig.service.Service;
 import ru.rushydro.vniig.util.data.UpdateTimeUtil;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.LocalTime;
@@ -79,7 +82,7 @@ public class AjaxController {
         return service.clearAndGetSensors();
     }
 
-    @RequestMapping(value = "/customGraphic", method = RequestMethod.GET)
+    @RequestMapping(value = "/customGraphic", method = RequestMethod.POST)
     public @ResponseBody
     GraphicData customGraphic (@RequestParam(required = false) String start,
                                @RequestParam(required = false) String end,
@@ -123,5 +126,26 @@ public class AjaxController {
             graphicData.setMaxTime(0L);
         }
         return graphicData;
+    }
+
+    @RequestMapping(value = "/customTable", method = RequestMethod.POST)
+    public @ResponseBody
+    TableData customTable (@RequestParam(required = false) String start,
+                           @RequestParam(required = false) String end,
+                           @RequestParam(required = false) String list,
+                           @RequestParam(defaultValue = "1") int page) {
+        final TableData tableData = new TableData();
+
+        int pageSize = 20;
+
+        Integer count = service.countStorageSensorValues(start, end, list);
+        tableData.setPageCount(new BigDecimal(count)
+                .divide(new BigDecimal(pageSize), 0, RoundingMode.UP).intValue());
+
+        if (tableData.getPageCount() > page) {
+            tableData.setSensorValues(service.getStorageSensorValuesForTable(start, end, list, pageSize, (page - 1) * pageSize));
+        }
+
+        return tableData;
     }
 }

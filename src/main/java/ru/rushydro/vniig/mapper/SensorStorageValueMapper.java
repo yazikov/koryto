@@ -20,9 +20,19 @@ public class SensorStorageValueMapper implements RowMapper<SensorValue> {
         sensorValue.setSensorId(rs.getLong("id_sensor"));
         sensorValue.setValue(rs.getDouble("value"));
         sensorValue.setDate(LocalDate.parse(rs.getString("v_date"), DateTimeFormatter.ISO_LOCAL_DATE));
-        sensorValue.setTime(LocalTime.parse(rs.getString("v_time"), rs.getString("v_time").contains(".")
-                ? DateTimeFormatter.ofPattern("HH:mm:ss.SSSSSS") : DateTimeFormatter.ofPattern("HH:mm:ss")));
-        sensorValue.setLength(rs.getDouble("length_value"));
+        String time = rs.getString("v_time");
+        if (time.contains(".")) {
+            time = time.substring(0, time.lastIndexOf("."));
+        }
+        sensorValue.setTime(LocalTime.parse(time,  DateTimeFormatter.ofPattern("HH:mm:ss")));
+        sensorValue.setBlockId(rs.getLong("id_block"));
+        if (rs.getDouble("start_length_value") != 0) {
+            sensorValue.setLength(rs.getDouble("start_length_value"));
+        } else {
+            sensorValue.setLength(rs.getDouble("length_value"));
+        }
+        sensorValue.setStartLength(rs.getDouble("start_length_value"));
+        sensorValue.setEndLength(rs.getDouble("end_length_value"));
         return sensorValue;
     }
 }

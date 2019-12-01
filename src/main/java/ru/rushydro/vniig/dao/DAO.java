@@ -97,30 +97,46 @@ public class DAO {
         return true;
     }
 
-    public List<SensorValue> getStorageSensorValues(String start, String end, String list) {
-        StringBuilder sql = new StringBuilder();
+    public List<SensorValue> getStorageSensorValues(String start, String end, String list, int limit, int offset) {
+        return getJdbcTemplate().query("select svs.*, " +
+                "s.id_block, " +
+                "s.start_length_value, " +
+                "s.end_length_value " +
+                "from sensor_value_storage svs join sensor s on svs.id_sensor = s.id where "
+                + generateStorageSensorValuesWhere(start, end, list)
+                + " order by s.id, v_date, v_time limit " + limit + " offset " + offset, new SensorStorageValueMapper());
+    }
+
+    public List<SensorValue> getStorageSensorValuesForTable(String start, String end, String list, int limit, int offset) {
+        return getJdbcTemplate().query("select svs.*, " +
+                "s.id_block, " +
+                "s.start_length_value, " +
+                "s.end_length_value " +
+                "from sensor_value_storage svs join sensor s on svs.id_sensor = s.id where "
+                + generateStorageSensorValuesWhere(start, end, list)
+                + " order by v_date desc, v_time desc, s.id limit " + limit + " offset " + offset, new SensorStorageValueMapper());
+    }
+
+    public int countStorageSensorValues(String start, String end, String list) {
+        return getJdbcTemplate().queryForObject("select count(*) "
+                + "from sensor_value_storage svs join sensor s on svs.id_sensor = s.id where "
+                + generateStorageSensorValuesWhere(start, end, list), Integer.class);
+    }
+
+    public String generateStorageSensorValuesWhere(String start, String end, String list) {
+        StringBuilder sql = new StringBuilder(" s.start_length_value != 0 and s.start_length_value is not null ");
         if (list != null && !list.isEmpty()) {
-            sql.append(" length_value in (").append(list).append(") ");
+            sql.append(" and id_sensor in (").append(list).append(") ");
         }
 
         if (start != null && !start.isEmpty() && end != null && !end.isEmpty()) {
-            if (sql.length() > 0) {
-                sql.append(" and ");
-            }
-            sql.append(" v_date between '").append(start).append("' and '").append(end).append("' ");
+            sql.append(" and v_date between '").append(start).append("' and '").append(end).append("' ");
         } else if (start != null && !start.isEmpty()) {
-            if (sql.length() > 0) {
-                sql.append(" and ");
-            }
-            sql.append(" v_date >= '").append(start).append("' ");
+            sql.append(" and v_date >= '").append(start).append("' ");
         } else if (end != null && !end.isEmpty()) {
-            if (sql.length() > 0) {
-                sql.append(" and ");
-            }
-            sql.append(" v_date <= '").append(end).append("' ");
+            sql.append(" and v_date <= '").append(end).append("' ");
         }
 
-        return getJdbcTemplate().query("select * from sensor_value_storage where "
-                + sql.toString() + " order by length_value, v_date, v_time", new SensorStorageValueMapper());
+        return sql.toString();
     }
 }

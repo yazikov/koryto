@@ -72,6 +72,8 @@ $(document).ready(function() {
             col.removeClass('col-xs-1');
             col.addClass('col-xs-2');
         }
+    }).on('click', '.clean-sensors', function () {
+        $("input[name^=sensor-id-]").prop("checked", false);
     });
 
     $('#settings-tab').on('shown.bs.tab', function(){

@@ -101,6 +101,18 @@ public class Service {
     }
 
     public List<SensorValue> getStorageSensorValues(String start, String end, String list) {
-        return dao.getStorageSensorValues(start, end, list);
+        return getStorageSensorValues(start, end, list, Integer.MAX_VALUE, 0);
+    }
+
+    public List<SensorValue> getStorageSensorValues(String start, String end, String list, int limit, int offset) {
+        return dao.getStorageSensorValues(start, end, list, limit, offset);
+    }
+
+    public List<SensorValue> getStorageSensorValuesForTable(String start, String end, String list, int limit, int offset) {
+        return dao.getStorageSensorValuesForTable(start, end, list, limit, offset);
+    }
+
+    public Integer countStorageSensorValues(String start, String end, String list) {
+        return dao.countStorageSensorValues(start, end, list);
     }
 }

@@ -403,6 +403,40 @@ public class DataService {
                 prev = current;
             }
         }
+
+        prev = block.get(block.size() - 2);
+        prev.setStartFileLengthValue(new BigDecimal(12));
+        prev.setEndFileLengthValue(new BigDecimal(15.6).setScale(1, RoundingMode.HALF_UP));
+
+        for (int c = block.size() - 3; c >= start; c--) {
+            Sensor current = block.get(c);
+            if (current.getX() > 1670) {
+                break;
+            }
+            if (isWithLength(blockNumber, current)) {
+                current.setStartFileLengthValue(prev.getEndFileLengthValue().setScale(4, RoundingMode.HALF_UP));
+                current.setEndFileLengthValue(current.getEndLengthValue().subtract(current.getStartLengthValue())
+                        .multiply(new BigDecimal(k)).add(current.getStartFileLengthValue()).setScale(4, RoundingMode.HALF_UP));
+                prev = current;
+            }
+        }
+
+        prev = block.get(17);
+        prev.setStartFileLengthValue(new BigDecimal(1195.5).setScale(1, RoundingMode.HALF_UP));
+        prev.setEndFileLengthValue(new BigDecimal(1197.5).setScale(1, RoundingMode.HALF_UP));
+
+        for (int c = 16; c >= start; c--) {
+            Sensor current = block.get(c);
+            if (current.getX() < 1820) {
+                continue;
+            }
+            if (isWithLength(blockNumber, current)) {
+                current.setStartFileLengthValue(prev.getEndFileLengthValue().setScale(4, RoundingMode.HALF_UP));
+                current.setEndFileLengthValue(current.getEndLengthValue().subtract(current.getStartLengthValue())
+                        .multiply(new BigDecimal(k)).add(current.getStartFileLengthValue()).setScale(4, RoundingMode.HALF_UP));
+                prev = current;
+            }
+        }
     }
 
     private void processBlock4(List<Sensor> block, Sensor prev) {

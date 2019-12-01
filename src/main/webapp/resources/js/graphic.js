@@ -48,6 +48,37 @@ function drawGraphic() {
 }
 
 function drawCustomGraphic() {
+    var count = 0;
+    var blocks = [];
+    var list = '';
+    $('.sen').each(function() {
+        var me = $(this);
+        var check = me.find('input').prop("checked");
+        if (check) {
+            var blockId = me.find('.block-id').html();
+            if (blocks.indexOf(blockId) === -1) {
+                blocks.push(blockId);
+            }
+
+            if (list.length > 0) {
+                list += ',';
+            }
+            list += me.find('.sensor-id').html();
+            count++;
+        }
+    });
+
+    if (count === 0) {
+        alert('Выберите список датчиков для построения графика');
+        return;
+    } else if (count > 20) {
+        alert('Выберите не больше 20 датчиков для построения графика');
+        return;
+    } else if (blocks.length > 1) {
+        alert('Датчики для построения графика должны относиться к одному блоку');
+        return;
+    }
+
     $('#storage-graphic-tab').tab('show');
     var graphic = $('.custom-graphic');
     var body = $('body');
@@ -56,20 +87,9 @@ function drawCustomGraphic() {
     graphic.height(height);
     graphic.width(width);
 
-    var list = '';
+
     var start = $('#startDate').val();
     var end = $('#endDate').val();
-
-    $('.sen').each(function() {
-       var me = $(this);
-        var check = me.find('input').prop("checked");
-        if (check) {
-            if (list.length > 0) {
-                list += ',';
-            }
-            list += me.find('.length').html();
-        }
-    });
 
     $.ajax({
         url: "/ajax/customGraphic",
@@ -78,7 +98,8 @@ function drawCustomGraphic() {
             end: end,
             list: list
         },
-        dataType: "json"
+        dataType: "json",
+        method: "POST"
     }).done(function (data) {
         Flotr.draw(graphic[0], JSON.parse(data.graphicData), {
             xaxis : {

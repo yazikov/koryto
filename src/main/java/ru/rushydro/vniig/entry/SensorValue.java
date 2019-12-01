@@ -11,11 +11,17 @@ public class SensorValue {
 
     long sensorId;
 
+    long blockId;
+
     double value;
 
     String color;
 
     Double length;
+
+    Double startLength;
+
+    Double endLength;
 
     LocalDate date;
 
@@ -75,5 +81,29 @@ public class SensorValue {
 
     public void setLength(Double length) {
         this.length = length;
+    }
+
+    public long getBlockId() {
+        return blockId;
+    }
+
+    public void setBlockId(long blockId) {
+        this.blockId = blockId;
+    }
+
+    public Double getStartLength() {
+        return startLength;
+    }
+
+    public void setStartLength(Double startLength) {
+        this.startLength = startLength;
+    }
+
+    public Double getEndLength() {
+        return endLength;
+    }
+
+    public void setEndLength(Double endLength) {
+        this.endLength = endLength;
     }
 }
